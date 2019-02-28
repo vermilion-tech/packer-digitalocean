@@ -6,13 +6,19 @@
 ---
 
 
-0. _(Optional)_ Inspect Packer Template
+### 0. _(Optional)_ Inspect Packer Template
+
+```bash
+$ make inspect
+```
+
+or
 
 ```bash
 $ packer inspect ubuntu-18.04-docker.json
 ```
 
-1. Create a `variables.json` file with `api_token` variable.
+### 1. Create a `variables.json` file with `api_token` variable.
 
 ```bash
 $ vim variables.json
@@ -22,7 +28,13 @@ $ vim variables.json
 }
 ```
 
-2. Validate Packer Template
+### 2. Validate Packer Template
+
+```bash
+$ make validate
+```
+
+or
 
 ```bash
 $ packer validate \
@@ -30,7 +42,13 @@ $ packer validate \
     ubuntu-18.04-docker.json
 ```
 
-3. Build Packer Template
+### 3. Build Packer Template
+
+```bash
+$ make build
+```
+
+or
 
 ```bash
 $ packer build \
