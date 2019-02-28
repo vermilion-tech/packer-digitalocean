@@ -1,4 +1,15 @@
 {
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": "sudo apt update && sudo apt install -yq python"
+    },
+    {
+      "type": "ansible",
+      "playbook_file": "./playbook.yml",
+      "user": "root"
+    }
+  ],
   "builders": [
     {
       "type": "digitalocean",
@@ -7,7 +18,8 @@
       "region": "nyc1",
       "size": "s-1vcpu-1gb",
 
-      "ssh_username": "root"
+      "ssh_username": "root",
+      "snapshot_name": "vt-packer-{{packer_version}}-ubuntu-18-04-x64-docker-{{timestamp}}"
     }
   ],
   "description": "Ubuntu 18.04 w/ Docker"
