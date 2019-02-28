@@ -1,0 +1,14 @@
+{
+  "builders": [
+    {
+      "type": "digitalocean",
+      "api_token": "{{user `api_token`}}",
+      "image": "ubuntu-18-04-x64",
+      "region": "nyc1",
+      "size": "s-1vcpu-1gb",
+
+      "ssh_username": "root"
+    }
+  ],
+  "description": "Ubuntu 18.04 w/ Docker"
+}
