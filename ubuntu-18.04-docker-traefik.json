@@ -1,0 +1,35 @@
+{
+  "variables": {
+      "do_token": "{{env `DO_TOKEN`}}",
+      "available_regions": "{{env `AVAILABLE_REGIONS`}}"
+  },
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": "sudo add-apt-repository \"deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) universe\" && sudo apt update && sudo apt install -yq python python-pip"
+    },
+    {
+      "type": "shell",
+      "inline": "pip install docker docker-compose"
+    },
+    {
+      "type": "ansible",
+      "playbook_file": "./playbook.yml",
+      "user": "root"
+    }
+  ],
+  "builders": [
+    {
+      "type": "digitalocean",
+      "api_token": "{{user `do_token`}}",
+      "image": "ubuntu-18-04-x64",
+      "region": "nyc1",
+      "size": "s-1vcpu-1gb",
+
+      "ssh_username": "root",
+      "snapshot_name": "vt-packer-{{packer_version}}-ubuntu-18-04-x64-docker-traefik-{{timestamp}}",
+      "snapshot_regions": "{{user `available_regions`}}"
+    }
+  ],
+  "description": "Ubuntu 18.04 w/ Docker"
+}

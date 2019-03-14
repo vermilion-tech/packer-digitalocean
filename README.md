@@ -1,7 +1,7 @@
 # packer-digitalocean
 - Only supports Ubuntu 18.04 Docker.
 
-- Developed with Packer `1.3.4`.
+- Developed with Packer `1.3.5`.
 
 ---
 
@@ -15,17 +15,14 @@ $ make inspect
 or
 
 ```bash
-$ packer inspect ubuntu-18.04-docker.json
+$ packer inspect ubuntu-18.04-docker-traefik.json
 ```
 
-### 1. Create a `variables.json` file with `api_token` variable.
+### 1. Export required environmental variables
 
 ```bash
-$ vim variables.json
-
-{
-  "api_token": "digitalocean_api_token"
-}
+$ export AVAILABLE_REGIONS=nyc1,sfo2
+$ export DO_TOKEN=****************
 ```
 
 ### 2. Validate Packer Template
@@ -37,9 +34,7 @@ $ make validate
 or
 
 ```bash
-$ packer validate \
-    -var-file variables.json \
-    ubuntu-18.04-docker.json
+$ packer validate ubuntu-18.04-docker-traefik.json
 ```
 
 ### 3. Build Packer Template
@@ -51,7 +46,5 @@ $ make build
 or
 
 ```bash
-$ packer build \
-    -var-file variables.json \
-    ubuntu-18.04-docker.json
+$ packer build ubuntu-18.04-docker-traefik.json
 ```

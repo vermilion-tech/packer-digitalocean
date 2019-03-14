@@ -1,0 +1,9 @@
+traefik:
+  version: 1.7.9
+
+docker:
+  network: traefik
+
+acme:
+  staging: true
+  email: kaden@vermilion.tech

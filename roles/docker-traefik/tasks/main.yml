@@ -1,0 +1,41 @@
+- name: Create /docker/traefik directory
+  file:
+    path: "/docker/traefik"
+    state: directory
+    mode: 0775
+    group: docker
+    owner: "{{ ansible_user }}"
+
+- name: Create docker-compose.yml
+  template:
+    src: ../templates/docker-compose.yml.j2
+    dest: /docker/traefik/docker-compose.yml
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: 0775
+
+- name: Create traefik.toml
+  template:
+    src: ../templates/traefik.toml.j2
+    dest: /docker/traefik/traefik.toml
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: 0775
+
+- name: Create acme.json
+  file:
+    path: /docker/traefik/acme.json
+    state: touch
+    mode: 0600
+    modification_time: "preserve"
+    access_time: "preserve"
+
+- name: Create traefik docker network
+  docker_network:
+    name: "{{ docker.network }}"
+
+- name: Bring up Docker services
+  docker_service:
+    project_src: /docker/traefik
+    build: yes
+    state: present

@@ -1,7 +1,9 @@
 ---
 # Install Docker on Ubuntu Bionic/Xenial
+# https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-using-the-repository
 
-- name: ensure old versions of docker are uninstalled
+# 0.
+- name: Ensure old versions of docker are uninstalled
   apt:
     name: "{{ packages }}"
     state: absent
@@ -13,7 +15,13 @@
       - containerd
       - runc
 
-- name: update required packages to latest version
+# 1.
+- name: Update the apt package index
+  apt:
+    update_cache: yes
+
+# 2.
+- name: Install packages to allow apt to use a repository over HTTPS
   apt:
     name: "{{ packages }}"
     state: latest
@@ -26,40 +34,51 @@
       - gnupg-agent
       - software-properties-common
 
-- name: add docker public gpg key to apt keyring
+# 3.
+- name: Add Docker’s official GPG key
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
 
+# 4.0
 - name: get ubuntu release name
   command: lsb_release -cs
   register: release_command
 
-
-- name: add docker apt repository
+# 4.1
+- name: Use the following command to set up the stable repository.
   apt_repository:
     repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ release_command.stdout }} stable
     state: present
 
-- name: install docker
+# 5.
+- name: Update the apt package index
   apt:
-    name: docker-ce
-    state: latest
     update_cache: yes
 
-- name: add users to docker group
+# 6.
+- name: Install the latest version of Docker CE and containerd
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    update_cache: yes
+  vars:
+    packages:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+
+- name: Add users to Docker group
   user:
     name: "{{ item }}"
     groups: docker
     append: yes
   with_items: "{{ docker_users }}"
 
-- name: create docker services directory
+- name: Create /docker directory
   file:
-    path: "{{ item }}"
+    path: "/docker"
     state: directory
     mode: 0775
     group: docker
     owner: "{{ ansible_user }}"
-  with_items:
-    - /docker

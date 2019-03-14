@@ -1,3 +1,7 @@
 variables.json
 
 playbook.retry
+
+*.pem
+
+.DS_Store

@@ -1,12 +1,11 @@
 inspect:
-	packer inspect ubuntu-18.04-docker.json
+	packer inspect ubuntu-18.04-docker-traefik.json
 
 validate:
-	packer validate \
-	  -var-file variables.json \
-	  ubuntu-18.04-docker.json
+	packer validate ubuntu-18.04-docker-traefik.json
 
 build :
-	packer build \
-		-var-file variables.json \
-		ubuntu-18.04-docker.json
+	packer build ubuntu-18.04-docker-traefik.json
+
+debug:
+	packer build -debug ubuntu-18.04-docker-traefik.json

@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  traefik:
+    restart: always
+    image: traefik:{{ traefik.version }}
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+
+    volumes:
+      - ./traefik.toml:/traefik.toml
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./acme.json:/acme.json
+      - ./log:/var/log
+    networks:
+      - traefik
+
+    labels:
+      - "co.elastic.logs/module=traefik"
+      - "co.elastic.logs/fileset=access"
+networks:
+  {{ docker.network }}:
+    external:
+      name: {{ docker.network }}

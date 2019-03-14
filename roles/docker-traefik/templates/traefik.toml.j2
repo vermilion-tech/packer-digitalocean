@@ -1,0 +1,50 @@
+debug = false
+checkNewVersion = true
+
+defaultEntryPoints = [ "https", "http" ]
+
+[accessLog]
+
+[traefikLog]
+  format = "json"
+  filePath = "/var/log/traefik.log"
+
+[entryPoints]
+
+  [entryPoints.http]
+  address = ":80"
+  compress = true
+
+  [entryPoints.http.redirect]
+  entryPoint = "https"
+  permanent = true
+
+  [entryPoints.https]
+  address = ":443"
+  compress = true
+
+  [entryPoints.https.tls]
+
+  [entryPoints.traefik]
+  address = ":8080"
+  compress = true
+
+[api]
+[retry]
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+watch = true
+exposedByDefault = false
+network = "{{ docker.network }}"
+
+[acme]
+email = "{{ acme.email }}"
+storage = "acme.json"
+entryPoint = "https"
+onHostRule = true
+{% if acme.staging %}
+caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+{% endif %}
+
+  [acme.tlsChallenge]
