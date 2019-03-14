@@ -29,6 +29,13 @@ defaultEntryPoints = [ "https", "http" ]
   address = ":8080"
   compress = true
 
+  [entryPoints.traefik.auth]
+  headerField = "X-WebAuth-User"
+
+  [entryPoints.traefik.auth.basic]
+  removeHeader = true
+  users = [ "knelson:$apr1$N0IrjA9F$xIsjlFtf5z4/1kcco0FL7/" ]
+
 [api]
 [retry]
 

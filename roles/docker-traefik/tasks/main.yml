@@ -39,3 +39,4 @@
     project_src: /docker/traefik
     build: yes
     state: present
+    restarted: true
