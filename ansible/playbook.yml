@@ -1,0 +1,10 @@
+---
+# Installs Docker and Traefik on Ubuntu
+
+- name: Installs Ansible Roles
+  hosts: all
+  become: yes
+  become_user: root
+  roles:
+    - {role: 'kadenlnelson.ansible_role_ubuntu_base', tags: 'ubuntu-base'}
+    - {role: 'kadenlnelson.ansible_role_docker_traefik', tags: 'docker-traefik'}

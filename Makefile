@@ -1,11 +1,12 @@
+install:
+	ansible-galaxy install kadenlnelson.ansible_role_ubuntu_base
+	ansible-galaxy install kadenlnelson.ansible_role_docker_traefik
+
 inspect:
-	packer inspect ubuntu-18.04-docker-traefik.json
+	packer inspect images/ubuntu/base.json
 
 validate:
-	packer validate ubuntu-18.04-docker-traefik.json
+	packer validate images/ubuntu/base.json
 
-build :
-	packer build ubuntu-18.04-docker-traefik.json
-
-debug:
-	packer build -debug ubuntu-18.04-docker-traefik.json
+build:
+	packer build images/ubuntu/base.json

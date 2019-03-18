@@ -1,0 +1,38 @@
+{
+  "variables": {
+      "token": "{{env `DO_TOKEN`}}",
+      "image": "ubuntu-18-04-x64",
+      "region": "{{env `DO_REGION`}}",
+      "size": "s-1vcpu-1gb",
+      "ssh_username": "root",
+      "name": "vermilion-ubuntu-18.04-base",
+      "playbook_directory": "ansible",
+      "roles": "ubuntu-base"
+  },
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": "apt-get update && apt-get install -y python"
+    },
+    {
+      "type": "ansible",
+      "playbook_file": "{{user `playbook_directory`}}/playbook.yml",
+      "user": "root",
+      "extra_arguments": ["--tags", "{{user `roles`}}"]
+    }
+  ],
+  "builders": [
+    {
+      "type": "digitalocean",
+      "api_token": "{{user `token`}}",
+      "image": "{{user `image`}}",
+      "region": "{{user `region`}}",
+      "size": "{{user `size`}}",
+
+      "ssh_username": "{{user `ssh_username`}}",
+      "snapshot_name": "{{user `name`}}",
+      "snapshot_regions": "{{user `region`}}"
+    }
+  ],
+  "description": "Vermilion Ubuntu 18.04 Base Image"
+}

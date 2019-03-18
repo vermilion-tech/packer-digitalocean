@@ -1,22 +1,7 @@
 # packer-digitalocean
-- Only supports Ubuntu 18.04 Docker.
-
 - Developed with Packer `1.3.5`.
 
 ---
-
-
-### 0. _(Optional)_ Inspect Packer Template
-
-```bash
-$ make inspect
-```
-
-or
-
-```bash
-$ packer inspect ubuntu-18.04-docker-traefik.json
-```
 
 ### 1. Export required environmental variables
 
@@ -25,26 +10,31 @@ $ export AVAILABLE_REGIONS=nyc1,sfo2
 $ export DO_TOKEN=****************
 ```
 
-### 2. Validate Packer Template
+### 2. Install Roles from Ansible Galaxy
+```bash
+$ make install
+or
+$ ansible-galaxy install kadenlnelson.ansible_role_ubuntu_base
+$ ansible-galaxy install kadenlnelson.ansible_role_docker_traefik
+```
 
+### 3. _(Optional)_ Inspect Packer Images
+```bash
+$ make inspect
+or
+$ packer inspect images/ubuntu/base.json
+```
+
+### 4. Validate Packer Template
 ```bash
 $ make validate
-```
-
 or
-
-```bash
-$ packer validate ubuntu-18.04-docker-traefik.json
+$ packer validate images/ubuntu/base.json
 ```
 
-### 3. Build Packer Template
-
+### 5. Build Packer Template
 ```bash
 $ make build
-```
-
 or
-
-```bash
-$ packer build ubuntu-18.04-docker-traefik.json
+$ packer build images/ubuntu/base.json
 ```
