@@ -2,6 +2,11 @@ pipeline {
   agent { docker { image 'kadenlnelson/packer-ansible:latest' } }
 
   environment {
+    COMMIT_MESSAGE = """${sh(
+      returnStdout: true,
+      script: "git --no-pager log --format='medium' -1 ${GIT_COMMIT}"
+    )}"""
+    
     DIGITALOCEAN_API_TOKEN = credentials('digitalocean-pat')
   }
 
