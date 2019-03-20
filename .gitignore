@@ -5,3 +5,5 @@ playbook.retry
 *.pem
 
 .DS_Store
+
+.env
