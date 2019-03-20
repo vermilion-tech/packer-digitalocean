@@ -6,8 +6,10 @@ pipeline {
       returnStdout: true,
       script: "git --no-pager log --format='medium' -1 ${GIT_COMMIT}"
     )}"""
-    
+
     DIGITALOCEAN_API_TOKEN = credentials('digitalocean-pat')
+
+    DO_REGION = "nyc1"
   }
 
   stages {
