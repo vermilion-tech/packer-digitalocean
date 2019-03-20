@@ -10,16 +10,14 @@ pipeline {
       slackSend (color: '#282d34', message: "Installing Ansible Galaxy Requirements")
       sh 'ansible-galaxy install -r ansible/requirements.yml'
     }
-  }
 
-  stages {
-    stage('Linting / Validating')
+
+    stage('Linting / Validating') {
       slackSend (color: '#8dd7ff', message: "Inspecting & Validating vermilion-ubuntu-base")
       sh 'packer inspect images/ubuntu/base.json'
       sh 'packer validate images/ubuntu/base.json'
-  }
+    }
 
-  stages {
     stage('Building vermilion-ubuntu-base') {
       slackSend (color: '#1aaeff', message: "Building vermilion-ubuntu-base")
       sh 'packer build images/ubuntu/base.json'
