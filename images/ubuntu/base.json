@@ -3,7 +3,7 @@
       "token": "{{env `DO_TOKEN`}}",
       "image": "ubuntu-18-04-x64",
       "region": "{{env `DO_REGION`}}",
-      "size": "s-1vcpu-1gb",
+      "size": "s-4vcpu-8gb",
       "ssh_username": "root",
       "name": "vermilion-ubuntu-18.04-base",
       "playbook_directory": "ansible",
