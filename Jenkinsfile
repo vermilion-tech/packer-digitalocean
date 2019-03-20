@@ -6,6 +6,12 @@ pipeline {
   }
 
   stages {
+    stage('Notify Slack') {
+        steps {
+            slackSend(color: '#000000', message: "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)\n```${env.COMMIT_MESSAGE}```")
+        }
+    }
+
     stage('Install Dependencies') {
       steps {
         slackSend (color: '#282d34', message: "Installing Ansible Galaxy Requirements")
