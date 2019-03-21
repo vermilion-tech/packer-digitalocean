@@ -27,9 +27,8 @@ pipeline {
     stage('Linting / Validating') {
       steps {
         slackSend (color: '#8dd7ff', message: "Inspecting & Validating vermilion-ubuntu-base")
-        sh 'source $DOTENV'
-        sh 'packer inspect images/ubuntu/base.json'
-        sh 'packer validate images/ubuntu/base.json'
+        sh 'source $DOTENV; packer inspect images/ubuntu/base.json'
+        sh 'source $DOTENV; packer validate images/ubuntu/base.json'
       }
     }
 
