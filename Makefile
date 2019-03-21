@@ -1,6 +1,5 @@
 install:
-	ansible-galaxy install kadenlnelson.ansible_role_ubuntu_base
-	ansible-galaxy install kadenlnelson.ansible_role_docker_traefik
+	ansible-galaxy install -r ansible/requirements.yml
 
 inspect:
 	packer inspect images/ubuntu/base.json

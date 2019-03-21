@@ -1,14 +1,36 @@
 {
   "variables": {
-      "token": "{{env `DO_TOKEN`}}",
-      "image": "ubuntu-18-04-x64",
+      "token": "{{env `DIGITALOCEAN_API_TOKEN`}}",
+
+      "spaces_access_key": "{{env `SPACES_ACCESS_KEY`}}",
+      "spaces_secret_key": "{{env `SPACES_SECRET_KEY`}}",
+      "spaces_region": "{{env `SPACES_REGION`}}",
+      "space_name": "{{env `SPACE_NAME`}}",
+
       "region": "{{env `DO_REGION`}}",
-      "size": "s-4vcpu-8gb",
-      "ssh_username": "root",
+      "image": "ubuntu-18-04-x64",
+      "size": "s-2vcpu-4gb",
       "name": "vermilion-ubuntu-18.04-base",
+      "description": "Vermilion's Ubuntu 18.04 Base Image",
+      "tags": "ubuntu,packer",
+
+      "ssh_username": "root",
       "playbook_directory": "ansible",
       "roles": "ubuntu-base"
   },
+  "builders": [
+    {
+      "type": "digitalocean",
+      "api_token": "{{user `token`}}",
+      "image": "{{user `image`}}",
+      "region": "{{user `region`}}",
+      "size": "{{user `size`}}",
+
+      "ssh_username": "{{user `ssh_username`}}",
+      "snapshot_name": "{{user `name`}}",
+      "snapshot_regions": "{{user `region`}}"
+    }
+  ],
   "provisioners": [
     {
       "type": "shell",
@@ -21,17 +43,18 @@
       "extra_arguments": ["--tags", "{{user `roles`}}"]
     }
   ],
-  "builders": [
+  "post-processors": [
     {
-      "type": "digitalocean",
+      "type": "digitalocean-import",
       "api_token": "{{user `token`}}",
-      "image": "{{user `image`}}",
-      "region": "{{user `region`}}",
-      "size": "{{user `size`}}",
-
-      "ssh_username": "{{user `ssh_username`}}",
-      "snapshot_name": "{{user `name`}}",
-      "snapshot_regions": "{{user `region`}}"
+      "spaces_key": "{{user `spaces_access_key`}}",
+      "spaces_secret": "{{user `spaces_secret_key`}}",
+      "spaces_region": "{{user `region`}}",
+      "space_name": "{{user `space_name`}}",
+      "image_name": "{{user `name`}}",
+      "image_description": "{{user `description`}}",
+      "image_regions": ["{{user `region`}}"],
+      "image_tags": "{{user `tags`}}"
     }
   ],
   "description": "Vermilion Ubuntu 18.04 Base Image"
