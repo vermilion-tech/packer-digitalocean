@@ -2,33 +2,30 @@
   "variables": {
       "token": "{{env `DIGITALOCEAN_API_TOKEN`}}",
 
-      "spaces_access_key": "{{env `SPACES_ACCESS_KEY`}}",
-      "spaces_secret_key": "{{env `SPACES_SECRET_KEY`}}",
-      "spaces_region": "{{env `SPACES_REGION`}}",
-      "space_name": "{{env `SPACE_NAME`}}",
+      "build_region": "{{env `DO_BUILD_REGION`}}",
+      "snapshot_regions": "{{env `DO_SNAPSHOT_REGIONS`}}",
 
-      "region": "{{env `DO_REGION`}}",
       "image": "ubuntu-18-04-x64",
       "size": "s-2vcpu-4gb",
+      "ssh_username": "root",
+
       "name": "vermilion-ubuntu-18.04-base",
       "description": "Vermilion's Ubuntu 18.04 Base Image",
-      "tags": "ubuntu,packer",
 
-      "ssh_username": "root",
       "playbook_directory": "ansible",
-      "roles": "ubuntu-base"
+      "role_tags": "ubuntu-base"
   },
   "builders": [
     {
       "type": "digitalocean",
       "api_token": "{{user `token`}}",
       "image": "{{user `image`}}",
-      "region": "{{user `region`}}",
+      "region": "{{user `build_region`}}",
       "size": "{{user `size`}}",
 
       "ssh_username": "{{user `ssh_username`}}",
       "snapshot_name": "{{user `name`}}",
-      "snapshot_regions": "{{user `region`}}"
+      "snapshot_regions": "{{user `snapshot_regions`}}"
     }
   ],
   "provisioners": [
@@ -40,21 +37,7 @@
       "type": "ansible",
       "playbook_file": "{{user `playbook_directory`}}/playbook.yml",
       "user": "root",
-      "extra_arguments": ["--tags", "{{user `roles`}}"]
-    }
-  ],
-  "post-processors": [
-    {
-      "type": "digitalocean-import",
-      "api_token": "{{user `token`}}",
-      "spaces_key": "{{user `spaces_access_key`}}",
-      "spaces_secret": "{{user `spaces_secret_key`}}",
-      "spaces_region": "{{user `region`}}",
-      "space_name": "{{user `space_name`}}",
-      "image_name": "{{user `name`}}",
-      "image_description": "{{user `description`}}",
-      "image_regions": "{{user `region`}}",
-      "image_tags": "{{user `tags`}}"
+      "extra_arguments": ["--tags", "{{user `role_tags`}}"]
     }
   ],
   "description": "Vermilion Ubuntu 18.04 Base Image"
