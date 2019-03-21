@@ -35,7 +35,7 @@ pipeline {
     stage('Building vermilion-ubuntu-base') {
       steps {
         slackSend (color: '#1aaeff', message: "Building vermilion-ubuntu-base")
-        sh 'packer build images/ubuntu/base.json > vermilion-ubuntu-base.build-log'
+        sh 'source $DOTENV; packer build images/ubuntu/base.json > vermilion-ubuntu-base.build-log'
         script {
           BUILD_STATUS = sh(script: 'tail -n 5 vermilion-ubuntu-base.build-log', returnStdout: true)
         }
