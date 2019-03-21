@@ -18,7 +18,9 @@ pipeline {
     }
 
     stage('Testing Credential') {
-      sh 'echo $DOTENV'
+      steps {
+        sh 'echo $DOTENV'
+      }
     }
 
     // stage('Install Dependencies') {
