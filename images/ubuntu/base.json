@@ -53,7 +53,7 @@
       "space_name": "{{user `space_name`}}",
       "image_name": "{{user `name`}}",
       "image_description": "{{user `description`}}",
-      "image_regions": ["{{user `region`}}"],
+      "image_regions": "{{user `region`}}",
       "image_tags": "{{user `tags`}}"
     }
   ],
