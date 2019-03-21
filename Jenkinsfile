@@ -17,37 +17,32 @@ pipeline {
         }
     }
 
-    stage('Testing Credential') {
+    stage('Install Dependencies') {
       steps {
-        sh 'echo $DOTENV'
+        slackSend (color: '#282d34', message: "Installing Ansible Galaxy Requirements")
+        sh 'ansible-galaxy install -r ansible/requirements.yml'
       }
     }
 
-    // stage('Install Dependencies') {
-    //   steps {
-    //     slackSend (color: '#282d34', message: "Installing Ansible Galaxy Requirements")
-    //     sh 'ansible-galaxy install -r ansible/requirements.yml'
-    //   }
-    // }
-    //
-    // stage('Linting / Validating') {
-    //   steps {
-    //     slackSend (color: '#8dd7ff', message: "Inspecting & Validating vermilion-ubuntu-base")
-    //     sh 'packer inspect images/ubuntu/base.json'
-    //     sh 'packer validate images/ubuntu/base.json'
-    //   }
-    // }
-    //
-    // stage('Building vermilion-ubuntu-base') {
-    //   steps {
-    //     slackSend (color: '#1aaeff', message: "Building vermilion-ubuntu-base")
-    //     sh 'packer build images/ubuntu/base.json > vermilion-ubuntu-base.build-log'
-    //     script {
-    //       BUILD_STATUS = sh(script: 'tail -n 5 vermilion-ubuntu-base.build-log', returnStdout: true)
-    //     }
-    //     slackSend (color: '#bae7ff', message: "```${BUILD_STATUS}```")
-    //   }
-    // }
+    stage('Linting / Validating') {
+      steps {
+        slackSend (color: '#8dd7ff', message: "Inspecting & Validating vermilion-ubuntu-base")
+        sh 'source $DOTENV'
+        sh 'packer inspect images/ubuntu/base.json'
+        sh 'packer validate images/ubuntu/base.json'
+      }
+    }
+
+    stage('Building vermilion-ubuntu-base') {
+      steps {
+        slackSend (color: '#1aaeff', message: "Building vermilion-ubuntu-base")
+        sh 'packer build images/ubuntu/base.json > vermilion-ubuntu-base.build-log'
+        script {
+          BUILD_STATUS = sh(script: 'tail -n 5 vermilion-ubuntu-base.build-log', returnStdout: true)
+        }
+        slackSend (color: '#bae7ff', message: "```${BUILD_STATUS}```")
+      }
+    }
   }
 
   post {
