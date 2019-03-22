@@ -7,7 +7,7 @@ pipeline {
       script: "git --no-pager log --format='medium' -1 ${GIT_COMMIT}"
     )}"""
 
-    DOTENV = credentials('packer-dotenv')
+    PACKER_LOG=1
   }
 
   stages {
@@ -27,17 +27,21 @@ pipeline {
     stage('Linting / Validating') {
       steps {
         slackSend (color: '#8dd7ff', message: "Inspecting & Validating vermilion-ubuntu-base")
-        sh 'source $DOTENV; packer inspect images/ubuntu/base.json'
-        sh 'source $DOTENV; packer validate images/ubuntu/base.json'
+        sh 'packer inspect images/ubuntu/base.json'
+        withCredentials([file(credentialsId: 'packer-digitalocean-var-file', variable: 'VARFILE')]) {
+          sh 'packer validate -var-file $VARFILE images/ubuntu/base.json'
+        }
       }
     }
 
     stage('Building vermilion-ubuntu-base') {
       steps {
         slackSend (color: '#1aaeff', message: "Building vermilion-ubuntu-base")
-        sh 'source $DOTENV; packer build images/ubuntu/base.json > vermilion-ubuntu-base.build-log'
+        withCredentials([file(credentialsId: 'packer-digitalocean-var-file', variable: 'VARFILE')]) {
+          sh 'packer build -var-file $VARFILE images/ubuntu/base.json > build.log'
+        }
         script {
-          BUILD_STATUS = sh(script: 'tail -n 5 vermilion-ubuntu-base.build-log', returnStdout: true)
+          BUILD_STATUS = sh(script: 'tail -n 2 build.log', returnStdout: true)
         }
         slackSend (color: '#bae7ff', message: "```${BUILD_STATUS}```")
       }
