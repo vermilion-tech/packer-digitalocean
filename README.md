@@ -3,19 +3,20 @@
 
 ---
 
-### 1. Export required environmental variables
-
-```bash
-$ export AVAILABLE_REGIONS=nyc1,sfo2
-$ export DO_TOKEN=****************
+### 1. Create `variables.json`
+```json
+{
+  "token": "DIGITALOCEAN_API_TOKEN",
+  "build_region": "nyc1",
+  "snapshot_regions": "nyc1,sfo2"
+}
 ```
 
-### 2. Install Roles from Ansible Galaxy
+### 2. Install Ansible Roles from Ansible Galaxy
 ```bash
 $ make install
 or
-$ ansible-galaxy install kadenlnelson.ansible_role_ubuntu_base
-$ ansible-galaxy install kadenlnelson.ansible_role_docker_traefik
+$ ansible-galaxy install -r ansible/requirements.yml
 ```
 
 ### 3. _(Optional)_ Inspect Packer Images
@@ -29,12 +30,12 @@ $ packer inspect images/ubuntu/base.json
 ```bash
 $ make validate
 or
-$ packer validate images/ubuntu/base.json
+$ packer validate -var-file variables.json images/ubuntu/base.json
 ```
 
 ### 5. Build Packer Template
 ```bash
 $ make build
 or
-$ packer build images/ubuntu/base.json
+$ packer build -var-file variables.json images/ubuntu/base.json
 ```
