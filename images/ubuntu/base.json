@@ -6,7 +6,7 @@
       "snapshot_regions": "{{env `DO_SNAPSHOT_REGIONS`}}",
 
       "image": "ubuntu-18-04-x64",
-      "size": "512mb",
+      "size": "s-1vcpu-1gb",
       "ssh_username": "root",
 
       "name": "vermilion-ubuntu-18.04-base",
