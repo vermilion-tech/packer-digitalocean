@@ -2,8 +2,8 @@
   "variables": {
       "token": "{{env `DIGITALOCEAN_API_TOKEN`}}",
 
-      "build_region": "{{env `DO_BUILD_REGION`}}",
-      "snapshot_regions": "{{env `DO_SNAPSHOT_REGIONS`}}",
+      "build_region": "nyc1",
+      "snapshot_regions": "nyc1",
 
       "image": "ubuntu-18-04-x64",
       "size": "s-1vcpu-1gb",

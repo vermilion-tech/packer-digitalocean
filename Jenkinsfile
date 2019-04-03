@@ -28,8 +28,8 @@ pipeline {
       steps {
         slackSend (color: '#8dd7ff', message: "Inspecting & Validating vermilion-ubuntu-base")
         sh 'packer inspect images/ubuntu/base.json'
-        withCredentials([file(credentialsId: 'packer-digitalocean-var-file', variable: 'VARFILE')]) {
-          sh 'packer validate -var-file $VARFILE images/ubuntu/base.json'
+        withCredentials([file(credentialsId: 'packer-digitalocean-token', variable: 'DIGITALOCEAN_API_TOKEN')]) {
+          sh 'packer validate images/ubuntu/base.json'
         }
       }
     }
@@ -37,8 +37,8 @@ pipeline {
     stage('Building vermilion-ubuntu-base') {
       steps {
         slackSend (color: '#1aaeff', message: "Building vermilion-ubuntu-base")
-        withCredentials([file(credentialsId: 'packer-digitalocean-var-file', variable: 'VARFILE')]) {
-          sh 'packer build -var-file $VARFILE images/ubuntu/base.json > build.log'
+        withCredentials([file(credentialsId: 'packer-digitalocean-token', variable: 'DIGITALOCEAN_API_TOKEN')]) {
+          sh 'packer build images/ubuntu/base.json > build.log'
         }
         script {
           BUILD_STATUS = sh(script: 'tail -n 2 build.log', returnStdout: true)
