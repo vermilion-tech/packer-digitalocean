@@ -20,7 +20,7 @@ pipeline {
     stage('Install Dependencies') {
       steps {
         slackSend (color: '#282d34', message: "Installing Ansible Galaxy Requirements")
-        sh 'ansible-galaxy install -r ansible/requirements.yml'
+        sh 'ansible-galaxy install -r ansible/requirements.yml --force'
       }
     }
 
